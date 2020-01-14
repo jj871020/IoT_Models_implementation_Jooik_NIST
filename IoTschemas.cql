@@ -100,7 +100,7 @@ schema SensorSchema = literal : Type {
 		sensorPowerConsume : Sensor -> Float
 		
 	path_equations
-		Query.value.varE = Query.invokes.varO
+		Query.value.varE = Query.invokesQ.varO
 		Obsv.sensor.asCompS = Obsv.asCmnd.compC
 	observation_equations
 		
