@@ -179,12 +179,8 @@ schema ActuatorSchema = literal : Type {
 		ActuatorName : Actuator -> String
 		ActuatorType : Actuator -> String
 		
-		//sensorOpRange : Sensor -> Float
-		//sensorNoise : Sensor -> Float
-		//sensorResolution : Sensor -> Float
-		//sensorAccuracy : Sensor -> Float
-		//sensorOutputRate : Sensor -> Float
-		//sensorPowerConsume : Sensor -> Float
+		ActuatorOpRange : Actuator -> Float
+		ActuatorPowerConsume : Actuator -> Float
 	path_equations
 		ActTrans.postA.mode = ActTrans.trans.post
 		ActTrans.preA.mode = ActTrans.trans.pre
