@@ -1,4 +1,4 @@
-// implementation for SIGMETRICS 2020 paper
+// implementation for "Compositional Models for the Internet of Things" paper
 
 typeside Type = literal { 
 	java_types
@@ -7,6 +7,8 @@ typeside Type = literal {
 		String = "java.lang.String"
 		Float = "java.lang.Double"
 		Int = "java.lang.Integer"
+		// HVAC computation
+		ObsVar = "jdk.nashorn.api.scripting.JSObject"
 
 	java_constants
 		Fn = "throw new RuntimeException()"
@@ -14,6 +16,9 @@ typeside Type = literal {
 		String = "return input[0]"
 		Float = "return 0.0 + java.lang.Double.parseDouble(input[0])"
 		Int = "return 0 + java.lang.Integer.parseInt(input[0])"
+		//HVAC computation
+		ObsVar = "throw new RuntimeException()"
+		
 
 	java_functions
 		plus : Float,Float -> Float = "return (input[0] + input[1])"
@@ -25,6 +30,11 @@ typeside Type = literal {
 		parse2 : String -> BinFn = "return new javax.script.ScriptEngineManager().getEngineByName(\"nashorn\").eval(input[0])"
 		apply : Fn, String -> String = "return \"\"+input[0].call(input[0],input[1])"
 		apply2 : BinFn, String, String -> String = "return \"\"+input[0].call(input[0],input[1],input[2])"
+		//HVAC computation
+		ObsVar1 : Float -> ObsVar = "return new javax.script.ScriptEngineManager().getEngineByName(\"nashorn\").eval(input[0])"
+		ObsVar2 : Float, ObsVar -> ObsVar = "return \"\"+input[0].call(input[0],input[1])"
+		control : 
+		
 }
 
 
