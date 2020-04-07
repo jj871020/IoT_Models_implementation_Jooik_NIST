@@ -1,4 +1,4 @@
-// implementation for SIGMETRICS 2020 paper
+// Implementation for "Compositional Models for the Internet of Things" paper
 
 typeside Type = literal { 
 	java_types
