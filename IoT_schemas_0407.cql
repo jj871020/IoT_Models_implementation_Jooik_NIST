@@ -39,6 +39,8 @@ typeside Type = literal {
 
 
 
+
+
 // Environmental variable Schema
 schema EnvVarSchema = literal : Type {
 	entities
@@ -377,9 +379,6 @@ instance testTherm = chase SensorConst extendTherm {
 
 
 
-/*
-
-
 
 
 
@@ -387,6 +386,7 @@ instance testTherm = chase SensorConst extendTherm {
 // Actuator schema
 schema ActuatorSchema = literal : Type {
 	imports 
+		ACSchema
 		CompSchema
 		EnvVarSchema
 	entities
@@ -395,6 +395,7 @@ schema ActuatorSchema = literal : Type {
 		ActTrans
 		Infl
 	foreign_keys
+		acisActuator : AC -> Actuator
 		asCompA		: Actuator -> Comp
 		mode 		: ActState -> Mode
 		trans		: ActTrans -> Transition
@@ -412,7 +413,9 @@ schema ActuatorSchema = literal : Type {
 		actuatorType : Actuator -> String
 		powerConsume : Actuator -> Float
 	observation_equations
-		
+		forall x. x.acisActuator.actuatorType = "AC"
+		forall y. y.acisActuator.actuatorName = y.ACName
+		forall z. z.acisActuator.powerConsume = z.ACpowerConsume
 }
 
 
@@ -425,6 +428,12 @@ mapping EnvVar2Actuator = literal : EnvVarSchema -> ActuatorSchema {
 // Mapping from Comp schema to Actuator schema
 mapping Comp2Actuator = literal : CompSchema -> ActuatorSchema {
 	imports identity CompSchema
+}
+
+
+// Mapping from 
+mapping AC2Actuator = literal : ACSchema -> ActuatorSchema {
+	imports identity ACSchema
 }
 
 
@@ -446,9 +455,9 @@ schema ACSchema = literal : Type {
 	entities
 		AC
 	attributes
-		actuatorType : AC-> String
-		actuatorName : AC-> String
-		powerConsume : AC-> Float
+
+		ACName : AC-> String
+		ACpowerConsume : AC-> Float
 		//specific to AC
 		airflow : AC-> Float
 		coolingCapacity : AC-> Float
@@ -456,7 +465,7 @@ schema ACSchema = literal : Type {
 			
 }
 
-
+/*
 // mapping from Actuator schema to AC schema
 mapping ACIsActuator = literal : ACSchema -> ActuatorSchema {
 	entity
@@ -467,7 +476,7 @@ mapping ACIsActuator = literal : ACSchema -> ActuatorSchema {
 		powerConsume -> powerConsume
 
 }
-
+*/
 
 // instantiation of AC catalogs
 instance testACData = literal : ACSchema {
@@ -499,6 +508,11 @@ instance testACData = literal : ACSchema {
 		energyEffRatio(ac3) = "3"
 		
 }
+
+
+
+instance pushTherm = sigma AC2Actuator testACData
+
 
 
 // Fan schema
@@ -561,6 +575,4 @@ instance testFanData = literal : FanSchema {
 
 
 
-
-*/
 
